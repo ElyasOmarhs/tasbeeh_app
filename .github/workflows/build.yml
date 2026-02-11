@@ -1,4 +1,4 @@
-name: Build Tasbeeh App
+name: Build Pro Tasbeeh
 
 on:
   push:
@@ -19,16 +19,21 @@ jobs:
           channel: 'stable'
           flutter-version: '3.19.0'
 
-      - name: 3. Create Project Structure
+      - name: 3. Create Project & Add Packages
         run: |
-          # دلته موږ یو نوی خالي فلاټور پروژه جوړوو
+          # نوی خالي پروژه جوړول
           flutter create temp_project --project-name tasbeeh_app --org com.zama
           
-          # اوس زموږ اصلی main.dart فایل هغې پروژې ته ور کاپي کوو
+          # ستاسو کوډ ور کاپي کول
           cp main.dart temp_project/lib/main.dart
           
-          # د ایپ لپاره اړین فایلونه تنظیمول
+          # دلته د پروژې فولډر ته ورننوځو
           cd temp_project
+          
+          # ---> دا ډېره مهمه برخه ده: کتابتونونه انسټالول <---
+          flutter pub add provider shared_preferences dynamic_color
+          
+          # د ډاډ لپاره بیا یو ځل ټول شیان راټولول
           flutter pub get
 
       - name: 4. Build APK
@@ -39,5 +44,5 @@ jobs:
       - name: 5. Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: tasbeeh-app
+          name: tasbeeh-pro-app
           path: temp_project/build/app/outputs/flutter-apk/app-release.apk
