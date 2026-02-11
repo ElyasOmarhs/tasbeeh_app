@@ -1,0 +1,43 @@
+name: Build Tasbeeh App
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.19.0'
+
+      - name: 3. Create Project Structure
+        run: |
+          # دلته موږ یو نوی خالي فلاټور پروژه جوړوو
+          flutter create temp_project --project-name tasbeeh_app --org com.zama
+          
+          # اوس زموږ اصلی main.dart فایل هغې پروژې ته ور کاپي کوو
+          cp main.dart temp_project/lib/main.dart
+          
+          # د ایپ لپاره اړین فایلونه تنظیمول
+          cd temp_project
+          flutter pub get
+
+      - name: 4. Build APK
+        run: |
+          cd temp_project
+          flutter build apk --release
+
+      - name: 5. Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: tasbeeh-app
+          path: temp_project/build/app/outputs/flutter-apk/app-release.apk
