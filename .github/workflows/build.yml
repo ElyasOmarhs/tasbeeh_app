@@ -17,7 +17,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.27.0' # دلته مې ورژن نوی کړ
+          flutter-version: '3.19.0' # بېرته باوري ورژن ته راغلو
 
       - name: 3. Create Project & Add Packages
         run: |
@@ -30,10 +30,11 @@ jobs:
           # د پروژې فولډر ته ورننوځو
           cd temp_project
           
-          # کتابتونونه انسټالول
-          flutter pub add provider shared_preferences dynamic_color
+          # ---> هغه جنجالي dynamic_color مې لرې کړ <---
+          # یوازې provider او shared_preferences پاتې شول
+          flutter pub add provider shared_preferences
           
-          # د ډاډ لپاره بیا یو ځل ټول شیان راټولول
+          # ټول شیان راټولول
           flutter pub get
 
       - name: 4. Build APK
