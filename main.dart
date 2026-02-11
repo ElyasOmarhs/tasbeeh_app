@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dynamic_color/dynamic_color.dart';
 
 void main() {
   runApp(
@@ -34,9 +33,8 @@ class TasbeehProvider extends ChangeNotifier {
 
   void reset() {
     if (_count > 0) {
-      // تاریخچې ته یې ورزیاتوو
       _history.insert(0, "${DateTime.now().toString().split('.')[0]} - مجموع: $_count");
-      if (_history.length > 10) _history.removeLast(); // یوازې وروستي ۱۰ ساتل
+      if (_history.length > 10) _history.removeLast();
     }
     _count = 0;
     _saveData();
@@ -49,14 +47,12 @@ class TasbeehProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ډاټا په موبایل کې خوندي کول
   Future<void> _saveData() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setInt('counter', _count);
     prefs.setStringList('history', _history);
   }
 
-  // ډاټا بېرته راوړل
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
     _count = prefs.getInt('counter') ?? 0;
@@ -71,22 +67,15 @@ class TasbeehApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.green),
-            useMaterial3: true,
-          ),
-          darkTheme: ThemeData(
-            colorScheme: darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.green, brightness: Brightness.dark),
-            useMaterial3: true,
-          ),
-          themeMode: ThemeMode.system,
-          home: const HomePage(),
-        );
-      },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'الکترونیکي تسبیح',
+      theme: ThemeData(
+        // دلته مو یو ثابت شین رنګ ورکړ، چې په هر موبایل کې ښکلی ښکاري
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
+      ),
+      home: const HomePage(),
     );
   }
 }
@@ -102,6 +91,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('الکترونیکي تسبیح'),
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.history),
@@ -118,7 +108,6 @@ class HomePage extends StatelessWidget {
             const Text('اوسنی ذکر', style: TextStyle(fontSize: 24, color: Colors.grey)),
             const SizedBox(height: 20),
             
-            // لویه شمېره
             Text(
               '${provider.count}',
               style: TextStyle(
@@ -130,7 +119,6 @@ class HomePage extends StatelessWidget {
             
             const SizedBox(height: 50),
             
-            // د ذکر تڼۍ
             SizedBox(
               width: 200,
               height: 200,
@@ -139,6 +127,7 @@ class HomePage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                  elevation: 5,
                 ),
                 child: const Text('سبحان الله', style: TextStyle(fontSize: 28)),
               ),
@@ -146,7 +135,6 @@ class HomePage extends StatelessWidget {
             
             const SizedBox(height: 30),
             
-            // د ریسېټ تڼۍ
             TextButton.icon(
               onPressed: provider.reset,
               icon: const Icon(Icons.refresh, color: Colors.red),
@@ -169,6 +157,7 @@ class HistoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('تاریخچه'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
@@ -182,7 +171,7 @@ class HistoryPage extends StatelessWidget {
               itemCount: provider.history.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: const Icon(Icons.check_circle_outline),
+                  leading: const Icon(Icons.check_circle_outline, color: Colors.green),
                   title: Text(provider.history[index]),
                 );
               },
