@@ -17,7 +17,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.19.0'
+          flutter-version: '3.27.0' # دلته مې ورژن نوی کړ
 
       - name: 3. Create Project & Add Packages
         run: |
@@ -27,10 +27,10 @@ jobs:
           # ستاسو کوډ ور کاپي کول
           cp main.dart temp_project/lib/main.dart
           
-          # دلته د پروژې فولډر ته ورننوځو
+          # د پروژې فولډر ته ورننوځو
           cd temp_project
           
-          # ---> دا ډېره مهمه برخه ده: کتابتونونه انسټالول <---
+          # کتابتونونه انسټالول
           flutter pub add provider shared_preferences dynamic_color
           
           # د ډاډ لپاره بیا یو ځل ټول شیان راټولول
