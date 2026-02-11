@@ -1,0 +1,27 @@
+name: tasbeeh_pro
+description: A Professional Material 3 Tasbeeh App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # د رنګونو د اتومات اخیستلو لپاره
+  dynamic_color: ^1.6.8
+  # د شمېرې او تنظیماتو یاد ساتلو لپاره
+  shared_preferences: ^2.2.2
+  # د سټیټ منجمنټ لپاره (مسلکي طریقه)
+  provider: ^6.1.1
+  # د ښکلو بټنونو او ایکنونو لپاره
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
